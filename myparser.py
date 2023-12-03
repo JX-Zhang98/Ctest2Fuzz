@@ -74,10 +74,30 @@ def getTestFuncsFromFile(root:clang.cindex.Cursor)->list[clang.cindex.Cursor]:
 # TODO: 将修改后的AST以合适的形式输出 
 def saveCode(root:clang.cindex.Cursor, filename:str):
     modifiedCode = ""
+    lastToken = None
+    spelling = ""
     for token in root.get_tokens():
-        modifiedCode += token.spelling
+        spelling = token.spelling
+        cursor = token.cursor
+        # TODO: 支持多种类型
+        # TODO: 自定义类型不认识会识别为CursorKind.DECL_STMT
+        if cursor.kind == clang.cindex.CursorKind.INTEGER_LITERAL:
+            # if cursor.semantic_parent.kind == clang.cindex.CursorKind.VAR_DECL:
+            if lastToken.spelling == "=":
+                assign = cursor.semantic_parent
+                value = cursor                
+                valuetokens = [t for t in value.get_tokens()]
+                print(Color.green("type: {}, name:{}, value:{}".format(assign.type.spelling, assign.displayname, valuetokens[0].spelling)))
+                spelling = "SetGetInt({})".format(spelling)
+
+
+
+        modifiedCode += spelling
+        ## TODO here
         # if token.kind.name == "KEYWORD" or token.kind.name == "IDENTIFIER":
         #     modifiedCode += " "
+        lastToken = token
+
     print(modifiedCode)
     with open(filename, 'w') as f:
         f.write(modifiedCode)

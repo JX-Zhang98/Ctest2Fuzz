@@ -3,6 +3,8 @@
 
 using namespace std;
 
+typedef  uint16_t VOS_UINT16;
+
 class MyTestCase0 : public testing::Test
 {
     protected:
