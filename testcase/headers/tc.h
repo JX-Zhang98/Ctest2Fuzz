@@ -1,6 +1,7 @@
 # include <stdio.h>
 # include <iostream>
-
+# include "def.h"
+# include "tc.h"
 using namespace std;
 
 typedef  uint16_t VOS_UINT16;
