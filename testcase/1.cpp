@@ -1,11 +1,14 @@
 #include <stdio.h>
+// #include "tc.h"
 // #include <gtest/gtest.h>
 
-int add(int a, VOS_INT16 b){
+int add(int a, int b){
     return a+b;
 }
 
-
+int sub(int a, int b){
+    return a-b;
+}
 
 int main() {
     printf("Hello, world!");

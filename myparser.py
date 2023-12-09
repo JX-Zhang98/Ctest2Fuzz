@@ -55,8 +55,10 @@ def traverseAndModify(root:clang.cindex.Cursor):
 
 
 
-
 def getTestFuncsFromFile(root:clang.cindex.Cursor)->list[clang.cindex.Cursor]:
+    '''
+    # getTestFuncsFromFile 从一个文件root node 中分析全部的Test函数，并返回cursor的列表
+    '''
     res = []
     for node in root.get_children():
         # print(node, node.kind, node.spelling)
@@ -67,6 +69,23 @@ def getTestFuncsFromFile(root:clang.cindex.Cursor)->list[clang.cindex.Cursor]:
                 res.append(node)
     return res
 
+
+def get_callee_from_func(node:clang.cindex.Cursor)->list[str]:
+    '''
+    # get_callee_from_func 获取一个函数中全部的callee，并返回callee函数名的字符串
+    '''
+    callees = []
+    last_token = ''
+    for token in node.get_tokens():
+        value = token.spelling
+        cursor = token.cursor
+        print("name: {}, kind: {}".format(value, cursor.kind))
+        if value == "(":
+            callees.append(last_token)
+        last_token = value
+
+    
+    return callees
     
 
 
